@@ -1,5 +1,6 @@
 package tests;
 
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -9,6 +10,7 @@ import excepciones.*;
 
 public class TestEmpleados
 {
+	Exception expected;
 	Empleado e = new Empleado();
 	@Test 
 	public void establecerNumeroDeEmpleadoCorrecto() 
@@ -16,21 +18,27 @@ public class TestEmpleados
         try 
         {
             e.establecerNumeroEmpleado("4");
-        } catch (NumeroEmpleadoException ex) 
+        }
+        catch (NumeroEmpleadoException ex) 
         {
         	fail();
         }
         assertEquals(4,e.getNumeroEmpleado());
 	}
-	@Test 
+	@Test (expected=java.lang.AssertionError.class)//No se por qué pero si pones
+	// NumeroEmpleadoException.class la excepción devuelve java.lang.AssertionError en vez de NumeroEmpleadoException
+	//Por lo que he visto en los errores es  porque en una comprobación que hace creo que antes del catch,
+	//Eclipse espera que sea null pero le devuelve excepciones.NumeroEmpleadoException y entonces es cuando transforma el error
+	//a java.lang.AssertionError, lo que no consigo averiguar es cuando realiza dicha comprobación para así modificarla.
 	public void establecerNumeroDeEmpleadoIncorrecto() 
 	{
         try 
         {
             e.establecerNumeroEmpleado("aaaa");
-        } catch (NumeroEmpleadoException ex) 
+        } 
+        catch (NumeroEmpleadoException ex) 
         {
-        	System.out.println("Introducción incorrecta, salta la excepción buena comprobación.");
+        	assertEquals(expected,ex);
         }
 	}
 	@Test 
@@ -45,7 +53,7 @@ public class TestEmpleados
         }
         assertEquals("rubenrodriguez",e.getNombreEmpleado());
 	}
-	@Test 
+	@Test (expected=java.lang.AssertionError.class)
 	public void establecerNombreDeEmpleadoIncorrecto() 
 	{
         try 
@@ -53,10 +61,10 @@ public class TestEmpleados
             e.estableceNombreEmpleado("123456789");
         } catch (NombreEmpleadoException ex) 
         {
-        	System.out.println("Introducción incorrecta, salta la excepción, buena comprobación.");
+        	assertEquals(expected,ex);
         }
 	}
-	@Test 
+	@Test (expected=java.lang.AssertionError.class)
 	public void establecerMesesDeEmpleadoIncorrecto() 
 	{
         try 
@@ -64,7 +72,7 @@ public class TestEmpleados
             e.estableceMesesTrabajo("example Incorrect");
         } catch (MesesTrabajoException ex) 
         {
-        	System.out.println("Introducción incorrecta, salta la excepción, buena comprobación.");
+        	assertEquals(expected,ex);
         }
 	}
 	@Test 
@@ -104,7 +112,7 @@ public class TestEmpleados
         }
         	assertEquals(false,e.getDirectivo());
 	}
-	@Test 
+	@Test (expected=java.lang.AssertionError.class)
 	public void establecerDirectivoIncorrecto() 
 	{
         try 
@@ -112,7 +120,7 @@ public class TestEmpleados
             e.establecerSerDirectivo("asd");
         } catch (CargoException ex) 
         {
-        	System.out.println("Introducción incorrecta, salta la excepción, buena comprobación.");
+        	assertEquals(expected,ex);
         }
 	}
 	@Test 
